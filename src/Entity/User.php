@@ -87,9 +87,15 @@ class User implements UserInterface
      */
     private $label;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="Pro")
+     */
+    private $requests;
+
     public function __construct()
     {
         $this->Projects = new ArrayCollection();
+        $this->requests = new ArrayCollection();
     }
     
     /**
@@ -309,6 +315,36 @@ class User implements UserInterface
     public function setLabel(?string $label): self
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Request>
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(Request $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests[] = $request;
+            $request->setPro($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): self
+    {
+        if ($this->requests->removeElement($request)) {
+            // set the owning side to null (unless already changed)
+            if ($request->getPro() === $this) {
+                $request->setPro(null);
+            }
+        }
 
         return $this;
     }

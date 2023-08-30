@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\DTO\ProDTO;
+use App\Entity\Request;
 use App\Entity\User;
 use App\DTO\UserDTO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -84,7 +85,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $usersDTO;
 
     }
-
 
     public function auth($user)
     {

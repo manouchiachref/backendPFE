@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\DTO\ProDTO;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserAuthType;
@@ -39,8 +40,14 @@ class UserController extends AbstractApiController
         $user = $userRepository->find($id);
 
 
+    if($user->getRoles()== ['ROLE_USER'])
+        {
+            return $this->respond(new UserDTO($user));
+        }else
+            {
+                return $this->respond(new ProDTO($user));
+            }
 
-        return $this->respond(new UserDTO($user));
     }
     /**
      * @Route("/{id}", name="user_remove", methods={"DELETE"})

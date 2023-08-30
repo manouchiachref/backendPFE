@@ -1,6 +1,5 @@
 <?php
 namespace App\DTO;
-use App\Entity\Project;
 use App\Entity\Projet;
 
 class ProjectDTO implements \JsonSerializable{
