@@ -12,15 +12,17 @@ class ProDTO implements \JsonSerializable{
     public function jsonSerialize() {
         return array(
             'id' => $this->user->getId(),
-            'name' => $this->user->getName(),
+            'firstname' => $this->user->getFirstname(),
+            'lastname' => $this->user->getLastname(),
             'username' => $this->user->getUserName(),
             'roles' => $this->user->getRoles(),
             'label' => $this->user->getLabel(),
             'metier' => $this->user->getMetier(),
             'zone' => $this->user->getZone(),
+            'isVerified' => $this->user->isVerified(),
             'matricule_fiscal' => $this->user->getMatriculeFiscal(),
             'solde' => $this->user->getSolde(),
-            'status' => $this->user->getStatus()
+            'numtel' => $this->user->getNumtel()
         );
     }
 

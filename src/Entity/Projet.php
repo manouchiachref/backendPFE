@@ -52,12 +52,22 @@ class Projet
     /**
      * @ORM\Column(type="string", length=255)
      */
+
+    private $type_batiment;
+    /**
+     * @ORM\Column(type="string", length=255 ,nullable=true)
+     */
     private $description;
+    /**
+     * @ORM\Column(type="string", length=255 ,nullable=true)
+     */
+    private $photo;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Projects")
      */
     private $user;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="Project")
@@ -85,6 +95,17 @@ class Projet
 
         return $this;
     }
+    public function getTypebatiment(): ?string
+    {
+        return $this->type_batiment;
+    }
+    public function setTypebatiment(string $type_batiment): self
+    {
+        $this->type_batiment = $type_batiment;
+
+        return $this;
+    }
+
 
     public function getType(): ?string
     {
@@ -94,6 +115,17 @@ class Projet
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(string $photo): self
+    {
+        $this->photo = $photo;
 
         return $this;
     }

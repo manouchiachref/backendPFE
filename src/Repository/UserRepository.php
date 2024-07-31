@@ -48,11 +48,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $encodedPassword = $this->passwordEncoder->encodePassword($user, $oldPassword);
         $user->setPassword($encodedPassword);
     }
-    
+
     public function passwordIsValid($user, $password){
         return $this->passwordEncoder->isPasswordValid($user, $password);
     }
-    
+
     public function findOneByUsername($pUsername): ?User
     {
         $userFounded = $this->findOneBy([
@@ -78,7 +78,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         foreach($userFounded as $user ){
 
-                array_push($usersDTO, new ProDTO($user));
+            array_push($usersDTO, new ProDTO($user));
 
 
         }
@@ -98,11 +98,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             return $userFounded;
         }
         else {
-            
+
             return false;
         }
     }
-    
+
     public function save(User $user)
     {
         $this->_em->persist($user);
@@ -114,12 +114,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         foreach($users as $user ){
 
-                array_push($usersDTO, new UserDTO($user));
+            array_push($usersDTO, new UserDTO($user));
 
         }
         return $usersDTO;
     }
-    
+
 
     // /**
     //  * @return User[] Returns an array of User objects

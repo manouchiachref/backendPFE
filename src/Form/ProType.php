@@ -13,22 +13,15 @@ class ProType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('firstname')
             ->add('username')
             ->add('label')
             ->add('password')
-            ->add('createdDate', DateTimeType::class, array(
-                "html5" => false,
-                "widget" => 'single_text',
-                "format" => 'yyyy-MM-dd',
-                "data" => new \DateTime(),
-                "required" => false
-            ))
             ->add('metier')
             ->add('zone')
             ->add('matricule_fiscal')
-            ->add('solde')
-            ->add('status')
+            ->add('lastname')
+            ->add('numtel')
         ;
     }
 

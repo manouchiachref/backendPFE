@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"password"}, message="There is already an account with this password")
+ * @UniqueEntity(fields={"firstname"}, message="There is already an account with this firstname")
  */
 class User implements UserInterface
 {
@@ -24,7 +25,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string")
      */
-    private $name;
+    private $firstname;
     
     /**
      * @ORM\Column(type="string")
@@ -43,17 +44,17 @@ class User implements UserInterface
     private $password;
     
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdDate;
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
-    private $status;
+    private $lastname;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isVerified = false;
 
@@ -92,6 +93,11 @@ class User implements UserInterface
      */
     private $requests;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $numtel;
+
     public function __construct()
     {
         $this->Projects = new ArrayCollection();
@@ -115,14 +121,14 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getName()
-    { return $this->name; }
+    public function getFirstname()
+    { return $this->firstname; }
 
     /**
-     * @param mixed $name
+     * @param mixed $firstname
      */
-    public function setName($name)
-    { $this->name = $name; }
+    public function setFirstname($firstname)
+    { $this->firstname = $firstname; }
     
     /**
      * A visual identifier that represents this user.
@@ -190,14 +196,14 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getStatus()
-    { return $this->status; }
+    public function getLastname()
+    { return $this->lastname; }
 
     /**
-     * @param mixed $status
+     * @param mixed $lastname
      */
-    public function setStatus($status)
-    { $this->status = $status; }
+    public function setLastname($lastname)
+    { $this->lastname = $lastname; }
 
 
     /**
@@ -345,6 +351,18 @@ class User implements UserInterface
                 $request->setPro(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNumtel(): ?string
+    {
+        return $this->numtel;
+    }
+
+    public function setNumtel(string $numtel): self
+    {
+        $this->numtel = $numtel;
 
         return $this;
     }

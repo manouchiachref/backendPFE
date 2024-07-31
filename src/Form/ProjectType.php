@@ -27,6 +27,8 @@ class ProjectType extends AbstractType
                 "required" => false
             ))
             ->add('status')
+            ->add('photo')
+            ->add ('type_batiment')
         ;
     }
 

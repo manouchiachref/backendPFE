@@ -8,7 +8,7 @@ class ProjectDTO implements \JsonSerializable{
     public function __construct(Projet $project){
         $this->project = $project;
     }
-    
+
     public function jsonSerialize() {
         return array(
             'id' => $this->project->getId(),
@@ -19,6 +19,8 @@ class ProjectDTO implements \JsonSerializable{
             'prix'=>$this->project->getPrix(),
             'delais'=>$this->project->getDelais(),
             'status' => $this->project->getStatus(),
+            'photo' => $this->project->getPhoto(),
+            'type_batiment' => $this->project->getTypebatiment(),
             'user'=> new UserDTO($this->project->getUser())
         );
     }

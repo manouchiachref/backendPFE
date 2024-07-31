@@ -13,17 +13,12 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
+            ->add('firstname')
             ->add('username')
             ->add('password')
-            ->add('createdDate', DateTimeType::class, array(
-                "html5" => false,
-                "widget" => 'single_text',
-                "format" => 'yyyy-MM-dd',
-                "data" => new \DateTime(),
-                "required" => false
-            ))
-            ->add('status')
+            ->add('lastname')
+            ->add('zone')
+            ->add('numtel')
         ;
     }
 

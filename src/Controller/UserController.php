@@ -14,40 +14,34 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/user")
  */
-class UserController extends AbstractApiController 
+class UserController extends AbstractApiController
 {
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */
-        public function index(): Response
+    public function index(): Response
     {
         $userRepository = $this->getDoctrine()->getRepository(User::class);
 
         $usersList = $userRepository->findUsersByRoles(['ROLE_USER']);
-        $users= $userRepository->usersListDTO($usersList);
+        $users = $userRepository->usersListDTO($usersList);
 
-        
         return $this->respond($users);
     }
-
     /**
      * @Route("/Profile/{id}", name="user_Profile", methods={"GET"})
      */
-    public function Profile($id): Response
+    public function profile($id): Response
     {
         $userRepository = $this->getDoctrine()->getRepository(User::class);
 
         $user = $userRepository->find($id);
 
-
-    if($user->getRoles()== ['ROLE_USER'])
-        {
+        if ($user->getRoles() == ['ROLE_USER']) {
             return $this->respond(new UserDTO($user));
-        }else
-            {
-                return $this->respond(new ProDTO($user));
-            }
-
+        } else {
+            return $this->respond(new ProDTO($user));
+        }
     }
     /**
      * @Route("/{id}", name="user_remove", methods={"DELETE"})
@@ -58,121 +52,113 @@ class UserController extends AbstractApiController
 
         $user = $userRepository->find($id);
 
-
         $userRepository->remove($user);
         return $this->respond(new UserDTO($user));
     }
     /**
      * @Route("/new", name="user_new", methods={"POST"})
      */
-    public function new(Request $request): Response
+    public function create(Request $request): Response
     {
-
         $user = new User();
-
         $form = $this->buildForm(UserType::class, $user);
-        
-        $form->handleRequest($request);//$form->submit($request->request->all());
-        
+
+        $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
             $userRepository = $this->getDoctrine()->getRepository(User::class);
-            if($userRepository->findOneByUsername($user->getUsername())) {                
-                
+
+            if ($userRepository->findOneByUsername($user->getUsername())) {
                 return $this->respond(
                     $form->getErrors(),
                     Response::HTTP_UNAUTHORIZED,
-                    "Username alredy exists"
+                    "Username already exists"
                 );
-            }
-            else {
-
+            } else {
                 $userRepository->encodePassword($user);
                 $userRepository->save($user);
-                
+
                 return $this->respond(
                     new UserDTO($user),
                     Response::HTTP_OK
                 );
             }
-        }
-        else {
-
+        } else {
             return $this->respond(
                 $form->getErrors(),
                 Response::HTTP_UNAUTHORIZED,
-                "Invalid Fields");                
+                "Invalid Fields"
+            );
         }
     }
-
     /**
      * @Route("/edit/{id}", name="user_edit", methods={"POST","PUT"})
      */
-    public function edit(Request $request,$id): Response
+    public function edit(Request $request, $id): Response
     {
         $user = new User();
-
         $form = $this->buildForm(UserType::class, $user);
 
         $form->handleRequest($request);
         $userRepository = $this->getDoctrine()->getRepository(User::class);
-        if ($form->isSubmitted() && $form->isValid() && $userRepository->find($id) ) {
-            $userRepository->encodePassword($user);
 
+        if ($form->isSubmitted() && $form->isValid() && $userRepository->find($id)) {
+            $userRepository->encodePassword($user);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->respond(
                 new UserDTO($user),
                 Response::HTTP_OK
             );
-        }
-        else {
-
+        } else {
             return $this->respond(
                 $form->getErrors(),
                 Response::HTTP_UNAUTHORIZED,
-                "Invalid Fields");
+                "Invalid Fields"
+            );
         }
     }
-    
+
     /**
      * @Route("/auth", methods={"POST"})
      */
     public function auth(Request $request)
-    { 
+    {
         $user = new User();
-
         $form = $this->buildForm(UserAuthType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-                
             $userRepository = $this->getDoctrine()->getRepository(User::class);
-            if($userResult = $userRepository->auth($user)) {
-                if ($userResult->isVerified())
-                {
+
+            if ($userResult = $userRepository->auth($user)) {
+                if ($userResult->isVerified()) {
+                    if ($userResult->getRoles() == ['ROLE_USER']) {
+                        return $this->respond(new UserDTO($userResult), Response::HTTP_OK);
+                    } else {
+                        return $this->respond(new ProDTO($userResult), Response::HTTP_OK);
+                    }
+                } else {
                     return $this->respond(
-                        new UserDTO($userResult),
-                        Response::HTTP_OK
+                        $form->getErrors(),
+                        Response::HTTP_UNAUTHORIZED,
+                        "User is not verified"
                     );
                 }
-
-            }
-            else
-            {
+            } else {
                 return $this->respond(
                     $form->getErrors(),
                     Response::HTTP_UNAUTHORIZED,
-                    "Username or Password incorrect");
+                    "Username or Password incorrect"
+                );
             }
-        }
-        else {
-
+        } else {
             return $this->respond(
                 $form->getErrors(),
                 Response::HTTP_UNAUTHORIZED,
-                "Invalid Fields");
+                "Invalid Fields"
+            );
         }
     }
 }

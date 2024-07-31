@@ -8,16 +8,18 @@ class UserDTO implements \JsonSerializable{
     public function __construct(User $user){
         $this->user = $user;
     }
-    
+
     public function jsonSerialize() {
         return array(
-            'id' => $this->user->getId(),                      
-            'name' => $this->user->getName(),
-            'username' => $this->user->getUserName(),               
+            'id' => $this->user->getId(),
+            'firstname' => $this->user->getFirstname(),
+            'lastname' => $this->user->getLastname(),
+            'username' => $this->user->getUserName(),
             'roles' => $this->user->getRoles(),
-            'createdDate' => $this->user->getCreatedDate(),
             'isVerified' => $this->user->isVerified(),
-            'status' => $this->user->getStatus()              
+            'numtel'=>$this->user->getNumtel(),
+            'zone'=>$this->user->getZone(),
+
         );
     }
 

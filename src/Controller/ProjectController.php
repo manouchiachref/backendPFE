@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-    /**
-     * @Route("/Project")
-     */
+/**
+ * @Route("/Project")
+ */
 class ProjectController extends AbstractApiController
 {
     /**
@@ -44,7 +44,7 @@ class ProjectController extends AbstractApiController
         return $this->respond($projects);
     }
     /**
-         * @Route("/new/{id}", name="Project_new", methods={"POST"})
+     * @Route("/new/{id}", name="Projectsaadadad", methods={"POST"})
      */
     public function new(Request $request,$id): Response
     {
@@ -52,23 +52,23 @@ class ProjectController extends AbstractApiController
         $project = new Projet();
 
         $form = $this->buildForm(ProjectType::class, $project);
-        
+
         $form->handleRequest($request);//$form->submit($request->request->all());
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $projectRep = $this->getDoctrine()
-            ->getRepository(
-                Projet::class);
+                ->getRepository(
+                    Projet::class);
             $userRepository = $this->getDoctrine()->getRepository(User::class);
             $user =$userRepository->find($id);
             $project->setUser($user);
-                $projectRep->add($project);
-                
-                return $this->respond(
-                    new ProjectDTO($project),
-                    Response::HTTP_OK
-                );
+            $projectRep->add($project);
+
+            return $this->respond(
+                new ProjectDTO($project),
+                Response::HTTP_OK
+            );
 
 
         }
@@ -77,7 +77,7 @@ class ProjectController extends AbstractApiController
             return $this->respond(
                 $form->getErrors(),
                 Response::HTTP_UNAUTHORIZED,
-                "Invalid Fields");                
+                "Invalid Fields");
         }
     }
     /**
@@ -99,15 +99,17 @@ class ProjectController extends AbstractApiController
                     Projet::class);
             $userRepository = $this->getDoctrine()->getRepository(User::class);
             $user =$userRepository->find($iduser);
-             $pro= $projectRep->find($id);
+            $pro= $projectRep->find($id);
 
-                    empty($project->getDescription()) ? true : $pro->setDescription($project->getDescription());
-                    empty($project->getType()) ? true : $pro->setType($project->getType());
-                    empty($project->getPrix()) ? true : $pro->setPrix($project->getPrix());
-                    empty($project->getDelais()) ? true : $pro->setDelais($project->getDelais());
-                    empty($project->getNomProjet()) ? true : $pro->setNomProjet($project->getNomProjet());
-                    empty($project->getZone()) ? true : $pro->setZone($project->getZone());
-                    $projectRep->update($pro);
+            empty($project->getDescription()) ? true : $pro->setDescription($project->getDescription());
+            empty($project->getType()) ? true : $pro->setType($project->getType());
+            empty($project->getPrix()) ? true : $pro->setPrix($project->getPrix());
+            empty($project->getDelais()) ? true : $pro->setDelais($project->getDelais());
+            empty($project->getNomProjet()) ? true : $pro->setNomProjet($project->getNomProjet());
+            empty($project->getZone()) ? true : $pro->setZone($project->getZone());
+            empty($project->getPhoto()) ? true : $pro->setPhoto($project->getPhoto());
+            empty($project->getTypebatiment()) ? true : $pro->setTypebatiment($project->getTypebatiment());
+            $projectRep->update($pro);
 
 
 
@@ -137,6 +139,7 @@ class ProjectController extends AbstractApiController
 
        $ProjectRepository->remove($project);
 
-        return $this->respond($project,Response::HTTP_UNAUTHORIZED,);
+        return $this->respond(null,200,);
+
     }
 }

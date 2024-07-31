@@ -31,10 +31,11 @@ class RegistrationController extends AbstractApiController
     }
 
     /**
-     * @Route("/register", name="app_register" ,methods={"POST"})
+     * @Route("/new/register", name="app_register" ,methods={"POST"})
      */
     public function register(Request $request, UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $entityManager): Response
     {
+
         $user = new User();
         $form = $this->buildForm(UserType::class, $user);
 
@@ -66,7 +67,7 @@ class RegistrationController extends AbstractApiController
                 $entityManager->flush();
                 $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                     (new TemplatedEmail())
-                        ->from(new Address('hassen.ahmadi@esprit.tn', 'pfe'))
+                        ->from(new Address('manouchiachref@gmail.com', 'pfe'))
                         ->to($user->getUsername())
                         ->subject('Please Confirm your Email')
                         ->htmlTemplate('registration/confirmation_email.html.twig')
@@ -111,7 +112,7 @@ class RegistrationController extends AbstractApiController
                 $user=$userRepository->findOneByUsername($user->getUsername());
                 $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                     (new TemplatedEmail())
-                        ->from(new Address('hassen.ahmadi@esprit.tn', 'pfe'))
+                        ->from(new Address('manouchiachref@gmail.com', 'pfe'))
                         ->to($user->getUsername())
                         ->subject('Please Confirm your Email')
                         ->htmlTemplate('registration/confirmation_email.html.twig')
@@ -198,7 +199,7 @@ class RegistrationController extends AbstractApiController
                 $entityManager->flush();
                 $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                     (new TemplatedEmail())
-                        ->from(new Address('hassen.ahmadi@esprit.tn', 'pfe'))
+                        ->from(new Address('manouchiachreff@gmail.com', 'pfe'))
                         ->to($user->getUsername())
                         ->subject('Please Confirm your Email')
                         ->htmlTemplate('registration/confirmation_email.html.twig')
